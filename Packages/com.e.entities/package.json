@@ -1,0 +1,17 @@
+{
+  "name": "com.e.entities",
+  "displayName": "Entities",
+  "version": "0.0.1",
+  "unity": "2019.3",
+  "license": "MIT",
+  "keywords": [
+    "entity",
+    "component",
+    "system"
+  ],
+  "author": {
+    "name": "ZhanQI"
+  },
+  "hideInEditor": false,
+  "description": "An Entity-Component-System framework based on unmanaged code."
+}

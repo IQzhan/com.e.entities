@@ -1,0 +1,19 @@
+{
+    "name": "TestScripts.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:da6318d1de060254a9c6a3c9fb9ce5cf",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:4f858180e721c79419981269233e422b",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
