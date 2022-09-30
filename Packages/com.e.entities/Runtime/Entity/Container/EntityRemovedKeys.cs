@@ -34,7 +34,7 @@ namespace E.Entities
 
             private readonly UnsafeBitMask m_Keys;
 
-            private int m_CurrrIndex;
+            private int m_Index;
 
             object IEnumerator.Current => GetCurrent();
 
@@ -44,33 +44,36 @@ namespace E.Entities
             {
                 m_ContainerID = containerID;
                 m_Keys = keys;
-                m_CurrrIndex = -1;
+                m_Index = -1;
             }
 
             public void Reset()
             {
-                m_CurrrIndex = -1;
+                m_Index = -1;
             }
 
             public bool MoveNext()
             {
-                if (m_CurrrIndex >= m_Keys.Capacity)
+                long nextIndex = m_Index + 1;
+                if (nextIndex < m_Keys.Capacity)
                 {
-                    return false;
+                    nextIndex = m_Keys.GetFirst(nextIndex);
+                    if (nextIndex != -1)
+                    {
+                        m_Index = (int)nextIndex;
+                        return true;
+                    }
+                    else
+                    {
+                        m_Index = (int)m_Keys.Capacity;
+                    }
                 }
-                int result = (int)m_Keys.GetFirstAfter(m_CurrrIndex);
-                if (result == -1)
-                {
-                    m_CurrrIndex = (int)m_Keys.Capacity;
-                    return false;
-                }
-                m_CurrrIndex = result;
-                return true;
+                return false;
             }
 
             private Entity GetCurrent()
             {
-                return new Entity(m_ContainerID, m_CurrrIndex, -1);
+                return new Entity(m_ContainerID, m_Index, -1);
             }
 
             public void Dispose()

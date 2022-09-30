@@ -1,13 +1,11 @@
 {
   "dependencies": {
     "com.e.collections": {
-      "version": "git://github.com/IQzhan/com.e.collections.git#v0.8.2",
+      "version": "https://github.com/IQzhan/com.e.collections.git#v0.8.4",
       "depth": 0,
       "source": "git",
-      "dependencies": {
-        "com.unity.burst": "1.6.3"
-      },
-      "hash": "e2e15f89113894f94800e2df6be1c955c36995e7"
+      "dependencies": {},
+      "hash": "c384f04dfe8df4e843dd2096e920ac4d32163c93"
     },
     "com.e.entities": {
       "version": "file:com.e.entities",
@@ -16,7 +14,7 @@
       "dependencies": {}
     },
     "com.unity.burst": {
-      "version": "1.6.4",
+      "version": "1.8.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -32,7 +30,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.14",
+      "version": "2.0.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -41,14 +39,14 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.mathematics": {
-      "version": "1.2.5",
+      "version": "1.2.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
-      "version": "1.1.31",
+      "version": "1.1.33",
       "depth": 0,
       "source": "registry",
       "dependencies": {
