@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.e.collections": {
-      "version": "https://github.com/IQzhan/com.e.collections.git#v0.8.4",
+      "version": "https://github.com/IQzhan/com.e.collections.git#v0.8.5",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c384f04dfe8df4e843dd2096e920ac4d32163c93"
+      "hash": "9fae7dc5010f49b830066fc851e02f9c96df60e7"
     },
     "com.e.entities": {
       "version": "file:com.e.entities",

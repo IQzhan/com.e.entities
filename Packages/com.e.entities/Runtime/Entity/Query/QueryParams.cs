@@ -215,6 +215,7 @@ namespace E.Entities
     {
         public EntityContainer* container;
         public int length;
+        public int componentCount;
         public fixed short offsets[8];
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
         public fixed byte ids[8];

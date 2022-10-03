@@ -1,6 +1,7 @@
 ﻿using E.Collections.Unsafe;
 using E.Entities;
 using System;
+using Unity.Burst;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace E
             m_Loaded = true;
         }
 
-        struct MoveCallback : IEntityQueryCallback4
+        struct MoveCallback : IEntityQueryCallback
         {
             public float time;
 
@@ -75,7 +76,7 @@ namespace E
 
             public float interval;
 
-            public void Execute(ref QueryResult4 result)
+            public void Execute(ref QueryResult result)
             {
                 int index = result.GetIdentity().LatestIndex;
                 float x = index % xLength;
@@ -87,11 +88,11 @@ namespace E
             }
         }
 
-        struct CopyMartixs : IEntityQueryCallback4
+        struct CopyMartixs : IEntityQueryCallback
         {
             public Matrix4x4[] matrix4X4s;
 
-            public void Execute(ref QueryResult4 result)
+            public void Execute(ref QueryResult result)
             {
                 var pos = result.GetComponent<PositionData>(0).Ref.position;
                 matrix4X4s[result.GetIdentity().LatestIndex] = float4x4.Translate(pos);

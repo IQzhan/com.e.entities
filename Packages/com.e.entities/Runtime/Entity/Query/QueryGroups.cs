@@ -9,8 +9,8 @@ namespace E.Entities
         {
             #region Query groups
 
-            public void QueryEntities4<Callback>(ref Callback callback, ref QueryParams queryParams, in ComponentTypeGroup componentTypes)
-                where Callback : struct, IEntityQueryCallback4
+            public void QueryEntities<Callback>(ref Callback callback, ref QueryParams queryParams, in ComponentTypeGroup componentTypes)
+                where Callback : struct, IEntityQueryCallback
             {
                 if (m_GroupCount == 0) return;
                 int usedMaskLength = GetUsedMaskLength();
@@ -27,31 +27,7 @@ namespace E.Entities
                         EntityContainer* container = GetConfirmedContainer(searchedID);
                         if (container->entityCount > 0)
                         {
-                            InvokeCallback4(ref callback, ref queryParams, container);
-                        }
-                    }
-                }
-            }
-
-            public void QueryEntities8<Callback>(ref Callback callback, ref QueryParams queryParams, in ComponentTypeGroup componentTypes)
-                where Callback : struct, IEntityQueryCallback8
-            {
-                if (m_GroupCount == 0) return;
-                int usedMaskLength = GetUsedMaskLength();
-                ulong* usedMask = stackalloc ulong[usedMaskLength];
-                InitUsedMask(usedMask, usedMaskLength, componentTypes);
-                for (int usedMaskIndex = 0; usedMaskIndex < usedMaskLength; usedMaskIndex++)
-                {
-                    var currUsedMask = usedMask[usedMaskIndex];
-                    while (currUsedMask != 0)
-                    {
-                        short offset = (short)BitUtility.GetTrailingZerosCount((long)currUsedMask);
-                        currUsedMask = (ulong)BitUtility.RemoveLowestOne((long)currUsedMask);
-                        short searchedID = (short)(64 * usedMaskIndex + offset + 1);
-                        EntityContainer* container = GetConfirmedContainer(searchedID);
-                        if (container->entityCount > 0)
-                        {
-                            InvokeCallback8(ref callback, ref queryParams, container);
+                            InvokeCallback(ref callback, ref queryParams, container);
                         }
                     }
                 }
@@ -79,8 +55,8 @@ namespace E.Entities
                 }
             }
 
-            private void InvokeCallback4<Callback>(ref Callback callback, ref QueryParams queryParams, EntityContainer* container)
-                where Callback : struct, IEntityQueryCallback4
+            private void InvokeCallback<Callback>(ref Callback callback, ref QueryParams queryParams, EntityContainer* container)
+                where Callback : struct, IEntityQueryCallback
             {
                 var containerQueryParams = GetContainerQueryParams(ref queryParams, container);
                 var scheduleMode = queryParams.ScheduleMode;
@@ -88,28 +64,10 @@ namespace E.Entities
                 {
                     case ScheduleMode.Run:
                     case ScheduleMode.Single:
-                        queryParams.target = callback.Schedule4(ref containerQueryParams, scheduleMode, queryParams.target);
+                        queryParams.target = callback.Schedule(ref containerQueryParams, scheduleMode, queryParams.target);
                         break;
                     case ScheduleMode.Parallel:
-                        var parallelHandle = callback.Schedule4(ref containerQueryParams, scheduleMode, queryParams.dependsOn);
-                        queryParams.target = JobHandle.CombineDependencies(queryParams.target, parallelHandle);
-                        break;
-                }
-            }
-
-            private void InvokeCallback8<Callback>(ref Callback callback, ref QueryParams queryParams, EntityContainer* container)
-                where Callback : struct, IEntityQueryCallback8
-            {
-                var containerQueryParams = GetContainerQueryParams(ref queryParams, container);
-                var scheduleMode = queryParams.ScheduleMode;
-                switch (scheduleMode)
-                {
-                    case ScheduleMode.Run:
-                    case ScheduleMode.Single:
-                        queryParams.target = callback.Schedule8(ref containerQueryParams, scheduleMode, queryParams.target);
-                        break;
-                    case ScheduleMode.Parallel:
-                        var parallelHandle = callback.Schedule8(ref containerQueryParams, scheduleMode, queryParams.dependsOn);
+                        var parallelHandle = callback.Schedule(ref containerQueryParams, scheduleMode, queryParams.dependsOn);
                         queryParams.target = JobHandle.CombineDependencies(queryParams.target, parallelHandle);
                         break;
                 }
@@ -117,13 +75,13 @@ namespace E.Entities
 
             private ContainerQueryParams GetContainerQueryParams(ref QueryParams queryParams, EntityContainer* container)
             {
+                int comCount = queryParams.Count;
                 ContainerQueryParams containerQueryParams = new ContainerQueryParams()
-                { container = container, length = container->entityCount };
+                { container = container, length = container->entityCount, componentCount = comCount };
                 short* offsetsPtr = containerQueryParams.offsets;
                 // set offsets to -1
                 *(long*)offsetsPtr = -1;
                 *(long*)(offsetsPtr + 4) = -1;
-                int comCount = queryParams.Count;
                 if (comCount > 0)
                 {
                     byte* ids;

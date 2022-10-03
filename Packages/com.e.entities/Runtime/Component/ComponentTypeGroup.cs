@@ -129,13 +129,13 @@ namespace E.Entities
 
         #region IEnumerator
 
-        public IDEnumerator GetIDEnumerator() => new IDEnumerator(this);
+        public IDEnumerator GetIDEnumerator() => new IDEnumerator(ref this);
 
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new Enumerator(ref this);
 
-        IEnumerator<ComponentType> IEnumerable<ComponentType>.GetEnumerator() => new Enumerator(this);
+        IEnumerator<ComponentType> IEnumerable<ComponentType>.GetEnumerator() => new Enumerator(ref this);
 
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(ref this);
 
         public struct IDEnumerator : IEnumerator<short>, IEnumerator, IDisposable
         {
@@ -143,7 +143,7 @@ namespace E.Entities
 
             private int m_ID;
 
-            public IDEnumerator(in ComponentTypeGroup instance)
+            public IDEnumerator(ref ComponentTypeGroup instance)
             {
                 m_Instance = instance;
                 m_ID = -1;
@@ -180,9 +180,9 @@ namespace E.Entities
         {
             private IDEnumerator m_IDEnumerator;
 
-            public Enumerator(in ComponentTypeGroup instance)
+            public Enumerator(ref ComponentTypeGroup instance)
             {
-                m_IDEnumerator = new IDEnumerator(instance);
+                m_IDEnumerator = new IDEnumerator(ref instance);
             }
 
             object IEnumerator.Current => Current;

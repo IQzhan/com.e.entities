@@ -277,7 +277,7 @@ namespace E.Test
                 // frame 0 begin
                 CompleteContainer(container);
                 // create
-                int createCount = 10000;
+                int createCount = 10;
                 // tell container to prepare chunks.
                 container->WillCreate(createCount);
                 CreateJob createJob = new CreateJob() { container = container };
@@ -459,9 +459,9 @@ namespace E.Test
             }
         }
 
-        private struct ForEachEntities : IEntityQueryCallback4
+        private struct ForEachEntities : IEntityQueryCallback
         {
-            public void Execute(ref QueryResult4 result)
+            public void Execute(ref QueryResult result)
             {
                 var entity = result.GetIdentity();
                 int innerKey = entity.InnerKey;

@@ -32,9 +32,9 @@ namespace E.Entities
         {
             private readonly short m_ContainerID;
 
-            private readonly UnsafeBitMask m_Keys;
-
             private int m_Index;
+
+            private readonly UnsafeBitMask m_Keys;
 
             object IEnumerator.Current => GetCurrent();
 

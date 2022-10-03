@@ -18,29 +18,18 @@ namespace E.Entities
             m_SearchTargets = componentTypes;
         }
 
-        internal JobHandle ForEach4<Callback>(ref Callback callback, ref QueryParams queryParams, ScheduleMode scheduleMode, JobHandle dependsOn)
-            where Callback : struct, IEntityQueryCallback4
+        internal JobHandle ForEach<Callback>(ref Callback callback, ref QueryParams queryParams, ScheduleMode scheduleMode, JobHandle dependsOn)
+            where Callback : struct, IEntityQueryCallback
         {
             CheckExists();
             queryParams.ScheduleMode = scheduleMode;
             queryParams.dependsOn = dependsOn;
             queryParams.target = dependsOn;
-            m_Scene->QueryEntities4(ref callback, ref queryParams, m_SearchTargets);
+            m_Scene->QueryEntities(ref callback, ref queryParams, m_SearchTargets);
             return queryParams.target;
         }
 
-        internal JobHandle ForEach8<Callback>(ref Callback callback, ref QueryParams queryParams, ScheduleMode scheduleMode, JobHandle dependsOn)
-            where Callback : struct, IEntityQueryCallback8
-        {
-            CheckExists();
-            queryParams.ScheduleMode = scheduleMode;
-            queryParams.dependsOn = dependsOn;
-            queryParams.target = dependsOn;
-            m_Scene->QueryEntities8(ref callback, ref queryParams, m_SearchTargets);
-            return queryParams.target;
-        }
-
-        internal void ForEachGroups<Callback>(ref Callback callback)
+        internal void ForEach<Callback>(ref Callback callback)
             where Callback : struct, IEntityGroupQueryCallback
         {
             CheckExists();
@@ -74,21 +63,12 @@ namespace E.Entities
             => !left.Equals(right);
     }
 
-    public unsafe static class EntityQueryExtends_Entities4
+    public unsafe static class EntityQueryExtends_Entities
     {
         public static JobHandle ForEach<Callback>(ref this EntityQuery query, QueryParams queryParams, Callback callback, ScheduleMode scheduleMode, JobHandle dependsOn = default)
-            where Callback : struct, IEntityQueryCallback4
+            where Callback : struct, IEntityQueryCallback
         {
-            return query.ForEach4(ref callback, ref queryParams, scheduleMode, dependsOn);
-        }
-    }
-
-    public unsafe static class EntityQueryExtends_Entities8
-    {
-        public static JobHandle ForEach<Callback>(ref this EntityQuery query, QueryParams queryParams, Callback callback, ScheduleMode scheduleMode, JobHandle dependsOn = default)
-            where Callback : struct, IEntityQueryCallback8
-        {
-            return query.ForEach8(ref callback, ref queryParams, scheduleMode, dependsOn);
+            return query.ForEach(ref callback, ref queryParams, scheduleMode, dependsOn);
         }
     }
 
@@ -97,7 +77,7 @@ namespace E.Entities
         public static void ForEach<Callback>(ref this EntityQuery query, Callback callback)
             where Callback : struct, IEntityGroupQueryCallback
         {
-            query.ForEachGroups(ref callback);
+            query.ForEach(ref callback);
         }
     }
 }
